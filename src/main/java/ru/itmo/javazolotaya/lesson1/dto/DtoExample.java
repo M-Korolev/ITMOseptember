@@ -1,4 +1,4 @@
-package ru.itmo.javazolotaya.dto;
+package ru.itmo.javazolotaya.lesson1.dto;
 
 import lombok.Data;
 
