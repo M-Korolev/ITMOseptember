@@ -1,16 +1,15 @@
-package ru.itmo.javazolotaya.lesson2;
+package ru.itmo.javazolotaya.lesson2.runner;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+import ru.itmo.javazolotaya.lesson2.service.TemperatureService;
 
 @Component
+@RequiredArgsConstructor
 public class AppRunner implements CommandLineRunner {
 
     private final TemperatureService service;
-
-    public AppRunner(TemperatureService service) {
-        this.service = service;
-    }
 
     @Override
     public void run(String... args) {
