@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: javazolotaya
+
+fibonacci:
+  useCache: false
