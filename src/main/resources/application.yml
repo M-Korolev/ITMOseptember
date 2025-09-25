@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: javazolotaya
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/itmo_cities
+    username: postgres
+    password: password
+    driver-class-name: org.postgresql.Driver
+
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:schema.sql
+
+fibonacci:
+  useCache: false
