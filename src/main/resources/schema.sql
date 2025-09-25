@@ -1,0 +1,6 @@
+CREATE TABLE IF NOT EXISTS cities (
+    id SERIAL PRIMARY KEY,
+    name_ru VARCHAR(100) NOT NULL,
+    name_en VARCHAR(100) NOT NULL,
+    population INT NOT NULL
+);
