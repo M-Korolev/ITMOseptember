@@ -33,7 +33,7 @@ public class City {
     private int population;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "country_id", nullable = false)
+    @JoinColumn(name = "country_id")
     @ToString.Exclude
     private Country country;
 

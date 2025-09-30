@@ -1,6 +1,5 @@
 package ru.itmo.javazolotaya.lesson4;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -11,7 +10,6 @@ import ru.itmo.javazolotaya.lesson4.service.CountryService;
 import java.util.Scanner;
 
 @SpringBootApplication
-@RequiredArgsConstructor
 public class AppRunner {
     public static void main(String[] args) {
 
