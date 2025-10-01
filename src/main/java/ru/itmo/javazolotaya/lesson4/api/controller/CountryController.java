@@ -18,38 +18,36 @@ public class CountryController {
     private final CountryService countryService;
 
     @GetMapping
-    public ResponseEntity<List<Country>> getAllCountries() {
-        return ResponseEntity.ok(countryService.getAllCountries());
+    public List<Country> getAllCountries() {
+        return countryService.getAllCountries();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Country> getCountry(@PathVariable Long id) {
+    public Country getCountry(@PathVariable Long id) {
         return countryService.getCountry(id)
-                .map(ResponseEntity::ok)
                 .orElseThrow(() -> new NotFoundException("Страна не найдена"));
     }
 
     @PostMapping
-    public ResponseEntity<Country> createCountry(@RequestBody Country country) {
-        Country saved = countryService.addCountry(country.getName());
-        return ResponseEntity.status(HttpStatus.CREATED).body(saved);
+    @ResponseStatus(HttpStatus.CREATED)
+    public Country createCountry(@RequestBody Country country) {
+        return countryService.addCountry(country.getName());
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Country> updateCountry(@PathVariable Long id, @RequestBody Country country) {
-        Country updated = countryService.updateCountry(id, country.getName());
-        return ResponseEntity.ok(updated);
+    public Country updateCountry(@PathVariable Long id, @RequestBody Country country) {
+        return countryService.updateCountry(id, country.getName());
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCountry(@PathVariable Long id) {
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteCountry(@PathVariable Long id) {
         countryService.deleteCountry(id);
-        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping
-    public ResponseEntity<Void> deleteAllCountries() {
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteAllCountries() {
         countryService.deleteAllCountries();
-        return ResponseEntity.noContent().build();
     }
 }
