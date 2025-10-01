@@ -2,7 +2,11 @@ package ru.itmo.javazolotaya.lesson4.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
+import ru.itmo.javazolotaya.lesson4.api.NotFoundException;
+import ru.itmo.javazolotaya.lesson4.api.dto.CityRequest;
+import ru.itmo.javazolotaya.lesson4.api.dto.CityResponse;
 import ru.itmo.javazolotaya.lesson4.model.City;
 import ru.itmo.javazolotaya.lesson4.model.Country;
 import ru.itmo.javazolotaya.lesson4.repository.CityRepository;
@@ -15,48 +19,66 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class CityService {
 
-    private final CityRepository cityRepository;
-    private final CountryRepository countryRepository;
+    private final CityRepository cityRepo;
+    private final CountryRepository countryRepo;
 
-    @Transactional
-    public City addCity(String nameRu, String nameEn, int population, Long countryId) {
-        Country country = countryRepository.findById(countryId)
-                .orElseThrow(() -> new RuntimeException("Country not found"));
+    public CityResponse create(CityRequest req) {
+        Country country = countryRepo.findById(req.countryId())
+                .orElseThrow(() -> new NotFoundException("СТрана не найдена"));
 
         City city = City.builder()
-                .nameRu(nameRu)
-                .nameEn(nameEn)
-                .population(population)
+                .nameRu(req.nameRu())
+                .nameEn(req.nameEn())
+                .population(req.population())
                 .country(country)
                 .build();
-        return cityRepository.save(city);
-    }
 
-    public List<City> getAllCities() {
-        return cityRepository.findAll();
-    }
-
-    public Optional<City> getCity(Long id) {
-        return cityRepository.findById(id);
+        city = cityRepo.save(city);
+        return toResp(city);
     }
 
     @Transactional
-    public City updateCity(Long id, String nameRu, String nameEn, int population) {
-        City city = cityRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Город не найден"));
-        city.setNameRu(nameRu);
-        city.setNameEn(nameEn);
-        city.setPopulation(population);
-        return cityRepository.save(city);
+    public CityResponse get(Long id) {
+        City city = cityRepo.findById(id)
+                .orElseThrow(() -> new NotFoundException("Город не найден"));
+        return toResp(city);
     }
 
     @Transactional
-    public void deleteCity(Long id) {
-        cityRepository.deleteById(id);
+    public List<CityResponse> list() {
+        return cityRepo.findAll().stream().map(this::toResp).toList();
     }
 
-    @Transactional
-    public void deleteAllCities() {
-        cityRepository.deleteAll();
+    public CityResponse update(Long id, CityRequest req) {
+        City city = cityRepo.findById(id)
+                .orElseThrow(() -> new NotFoundException("Город не найден"));
+
+        Country country = countryRepo.findById(req.countryId())
+                .orElseThrow(() -> new NotFoundException("Cтрана не найдена"));
+
+        city.setNameRu(req.nameRu());
+        city.setNameEn(req.nameEn());
+        city.setPopulation(req.population());
+        city.setCountry(country);
+
+        return toResp(city); // JPA dirty checking
+    }
+
+    public void delete(Long id) {
+        if (!cityRepo.existsById(id)) {
+            throw new NotFoundException("Город не найден");
+        }
+        cityRepo.deleteById(id);
+    }
+
+    private CityResponse toResp(City c) {
+        return new CityResponse(
+                c.getId(),
+                c.getNameRu(),
+                c.getNameEn(),
+                c.getPopulation(),
+                c.getCountry().getId(),
+                c.getCountry().getName()
+        );
     }
 }

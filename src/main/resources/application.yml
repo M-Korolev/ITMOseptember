@@ -11,7 +11,15 @@ spring:
   jpa:
     show-sql: false
     hibernate:
-      ddl-auto: none
+      ddl-auto: validate
+
+  springdoc:
+    swagger-ui:
+      path: /swagger-ui.html
+
+  liquibase:
+    clear-checksums: true
+    change-log: classpath:db/changelog/changelog-master.yaml
 
   sql:
     init:
@@ -20,3 +28,11 @@ spring:
 
 fibonacci:
   useCache: false
+
+logging:
+    level:
+      root: INFO
+      org.springdoc: DEBUG
+      org.springframework.web: DEBUG
+      org.springframework.boot.autoconfigure: DEBUG
+      org.hibernate: WARN

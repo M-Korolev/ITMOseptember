@@ -1,5 +1,6 @@
 package ru.itmo.javazolotaya.lesson4.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.GeneratedValue;
@@ -34,6 +35,7 @@ public class Country {
 
     @OneToMany(mappedBy = "country", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
+    @JsonIgnore
     private List<City> cities = new ArrayList<>();
 
     @Override
