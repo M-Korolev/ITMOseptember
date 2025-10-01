@@ -22,7 +22,7 @@ public class AuthController {
     private final JwtService jwtService;
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest request) {
+    public AuthResponse login(@RequestBody AuthRequest request) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getUsername(),
@@ -31,6 +31,6 @@ public class AuthController {
         );
 
         String token = jwtService.generateToken(authentication.getName());
-        return ResponseEntity.ok(new AuthResponse(token));
+        return new AuthResponse(token);
     }
 }

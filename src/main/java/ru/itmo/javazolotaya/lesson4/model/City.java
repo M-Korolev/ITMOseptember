@@ -29,11 +29,8 @@ public class City {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
     private String nameRu;
-    @Column
     private String nameEn;
-    @Column
     private int population;
 
     @ManyToOne(fetch = FetchType.LAZY)
