@@ -7,7 +7,6 @@ import ru.itmo.javazolotaya.lesson4.model.Country;
 import java.util.List;
 
 public interface CountryRepository extends JpaRepository<Country, Long> {
-
     @EntityGraph(attributePaths = "cities")
     List<Country> findAll();
 }

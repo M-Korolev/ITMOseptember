@@ -3,6 +3,7 @@ package ru.itmo.javazolotaya.lesson4.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.itmo.javazolotaya.lesson4.api.NotFoundException;
 import ru.itmo.javazolotaya.lesson4.model.Country;
 import ru.itmo.javazolotaya.lesson4.repository.CountryRepository;
 
@@ -34,7 +35,7 @@ public class CountryService {
     @Transactional
     public Country updateCountry(Long id, String name) {
         Country country = countryRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Country not found"));
+                .orElseThrow(() -> new NotFoundException("Страна не найдена"));
         country.setName(name);
         return countryRepository.save(country);
     }
